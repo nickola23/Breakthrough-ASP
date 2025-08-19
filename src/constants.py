@@ -1,0 +1,8 @@
+EMPTY = 0
+WHITE = 1
+BLACK = 2
+MOVE = 4
+CAPTURE = 5
+BOARD_SIZE = 8
+COLUMNS = "abcdefgh"
+ROWS = "12345678"
