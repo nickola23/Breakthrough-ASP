@@ -46,6 +46,6 @@ class ConsoleUI:
                 if 1 <= choice <= len(moves):
                     return moves[choice-1]
                 else:
-                    print("Pogrešan unos, probajte ponovo.")
+                    print("Pogresan unos, probajte ponovo.")
             except ValueError:
                 print("Unesite broj poteza.")

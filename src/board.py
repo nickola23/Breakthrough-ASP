@@ -53,7 +53,7 @@ class Board:
         self.set_piece(move.from_row, move.from_col, moving_piece)
         self.set_piece(move.to_row, move.to_col, captured_piece if captured_piece is not None else constants.EMPTY)
         self.side_to_move = previous_side
-        self.last_move = self.move_history[-1][0] if self.move_history else None    
+        self.last_move = self.move_history[-1][0] if self.move_history else None
 
     def get_winner(self):
         for col_index in range(self.size):

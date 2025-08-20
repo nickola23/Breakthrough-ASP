@@ -13,7 +13,7 @@ def evaluate_board(board, player):
                 # osnovni faktor: broj figura
                 score += 10
 
-                # napredak prema protivničkoj strani
+                # napredak prema protivnickoj strani
                 if player == constants.WHITE:
                     score += (board.size - row)
                 else:
@@ -26,12 +26,12 @@ def evaluate_board(board, player):
                 moves = board.generate_moves_for_piece(row, col, player)
                 score += len(moves)
 
-                # bonus za mogućnost “skoka” protivnika
+                # bonus za mogucnost skoka protivnika
                 for move in moves:
                     if move.move_type == constants.CAPTURE:
                         score += 5
 
-                # kažemo minus ako je figura izložena protivniku (diagonalno iza nje)
+                # kazemo minus ako je figura izlozena protivniku (diagonalno iza nje)
                 exposed = False
                 if player == constants.WHITE:
                     if row > 0:
@@ -51,7 +51,7 @@ def evaluate_board(board, player):
                         score -= 5
 
             elif piece == opponent:
-                # smanjujemo za protivničke figure
+                # smanjujemo za protivnicke figure
                 score -= 10
                 # dodatni minus za njihov napredak
                 if player == constants.WHITE:
