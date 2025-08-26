@@ -43,7 +43,10 @@ class Board:
         self.set_piece(move.from_row, move.from_col, constants.EMPTY)
         self.move_history.append((move, captured_piece, self.side_to_move))
         self.last_move = move
-        self.side_to_move = constants.BLACK if self.side_to_move == constants.WHITE else constants.WHITE
+        if self.side_to_move == constants.WHITE:
+            self.side_to_move = constants.BLACK
+        else:
+            self.side_to_move = constants.WHITE
 
     def undo_move(self):
         if not self.move_history:
@@ -53,7 +56,10 @@ class Board:
         self.set_piece(move.from_row, move.from_col, moving_piece)
         self.set_piece(move.to_row, move.to_col, captured_piece if captured_piece is not None else constants.EMPTY)
         self.side_to_move = previous_side
-        self.last_move = self.move_history[-1][0] if self.move_history else None
+        if self.move_history:
+            self.last_move = self.move_history[-1][0]
+        else:
+            self.last_move = None
 
     def get_winner(self):
         for col_index in range(self.size):

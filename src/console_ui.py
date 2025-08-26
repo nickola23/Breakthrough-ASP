@@ -24,7 +24,7 @@ class ConsoleUI:
 
                 if self.board.last_move and ((row == self.board.last_move.from_row and col == self.board.last_move.from_col) or
                                             (row == self.board.last_move.to_row and col == self.board.last_move.to_col)):
-                    char = f"\033[91m{char}\033[0m" # Oboji poslednji potez u crveno
+                    char = f"\033[91m{char}\033[0m" # Boji poslednji potez u crveno
 
                 print(f"{char} ", end="")
             print(f"| {row+1}")

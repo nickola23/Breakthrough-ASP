@@ -1,9 +1,12 @@
 import constants
 
 def evaluate_board(board, player):
-    opponent = constants.BLACK if player == constants.WHITE else constants.WHITE
-    score = 0
+    if player == constants.WHITE:
+        opponent = constants.BLACK
+    else:
+        opponent = constants.WHITE
 
+    score = 0
     center_column = board.size // 2
 
     for row in range(board.size):
@@ -26,7 +29,7 @@ def evaluate_board(board, player):
                 moves = board.generate_moves_for_piece(row, col, player)
                 score += len(moves)
 
-                # bonus za mogucnost skoka protivnika
+                # bonus za mogucnost uzimanja protivnika
                 for move in moves:
                     if move.move_type == constants.CAPTURE:
                         score += 5

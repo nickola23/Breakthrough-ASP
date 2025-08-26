@@ -18,5 +18,8 @@ class Move:
                 self.move_type == other.move_type)
 
     def __str__(self):
-        type_str = "CAPTURE" if self.move_type == constants.CAPTURE else "MOVE"
+        if self.move_type == constants.CAPTURE:
+            type_str = "CAPTURE"
+        else:
+            type_str = "MOVE"
         return f"{constants.COLUMNS[self.from_col]}{self.from_row+1} -> {constants.COLUMNS[self.to_col]}{self.to_row+1} {type_str}"

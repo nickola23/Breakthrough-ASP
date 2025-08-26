@@ -12,7 +12,10 @@ def main():
         ui.display_board()
         winner = board.get_winner()
         if winner:
-            print("Pobednik je:", "Beli" if winner==constants.WHITE else "Crni")
+            if winner == constants.WHITE:
+                print("Pobednik je: Beli")
+            else:
+                print("Pobednik je: Crni")
             break
 
         if board.side_to_move == constants.WHITE:
