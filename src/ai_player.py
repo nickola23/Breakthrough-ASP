@@ -9,6 +9,7 @@ class AIPlayer:
         self.player_color = player_color
         self.max_depth = max_depth
         self.time_limit = time_limit
+        self.transposition_table = {}
 
     def choose_move(self, board):
         start_time = time.perf_counter()
@@ -55,8 +56,17 @@ class AIPlayer:
         return best_move, best_score
 
     def minimax(self, board: Board, depth, alpha, beta, maximizing_player, start_time):
+        board_key = (str(board.board), depth, maximizing_player)
+
+        if board_key in self.transposition_table:
+            saved_depth, saved_score = self.transposition_table[board_key]
+            if saved_depth >= depth:
+                return saved_score
+
         if depth == 0 or board.get_winner() is not None:
-            return evaluate_board(board, self.player_color)
+            score = evaluate_board(board, self.player_color)
+            self.transposition_table[board_key] = (depth, score)
+            return score
         if time.perf_counter() - start_time > self.time_limit:
             raise TimeoutError()
 
@@ -73,6 +83,7 @@ class AIPlayer:
                 alpha = max(alpha, eval)
                 if beta <= alpha:
                     break
+            self.transposition_table[board_key] = (depth, max_eval)
             return max_eval
         else:
             min_eval = float('inf')
@@ -84,4 +95,5 @@ class AIPlayer:
                 beta = min(beta, eval)
                 if beta <= alpha:
                     break
+            self.transposition_table[board_key] = (depth, min_eval)
             return min_eval

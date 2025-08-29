@@ -42,10 +42,10 @@ class ConsoleUI:
     def ask_player_move(self, moves):
         while True:
             try:
-                choice = int(input("Izaberite broj poteza: "))
+                choice = int(input("Choose move number: "))
                 if 1 <= choice <= len(moves):
                     return moves[choice-1]
                 else:
-                    print("Pogresan unos, probajte ponovo.")
+                    print("Invalid input, please try again.")
             except ValueError:
-                print("Unesite broj poteza.")
+                print("Please enter a number.")

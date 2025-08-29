@@ -13,23 +13,23 @@ def main():
         winner = board.get_winner()
         if winner:
             if winner == constants.WHITE:
-                print("Pobednik je: Beli")
+                print("White is the winner!")
             else:
-                print("Pobednik je: Crni")
+                print("Black is the winner!")
             break
 
         if board.side_to_move == constants.WHITE:
             moves = board.generate_moves_for_player(board.side_to_move)
-            print("\nDostupni potezi:")
+            print("\nAvailable moves:")
             ui.display_moves(moves)
 
             selected_move = ui.ask_player_move(moves)
             board.make_move(selected_move)
         else:
             print("-" * 30)
-            print("AI bira potez...")
+            print("AI is choosing a move...")
             ai_move = ai_black.choose_move(board)
-            print("AI igra:", ai_move)
+            print("AI plays:", ai_move)
             board.make_move(ai_move)
             print("-" * 30)
 
