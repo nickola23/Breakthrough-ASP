@@ -5,19 +5,19 @@ import constants
 import time
 
 class AIPlayer:
-    def __init__(self, player_color, max_depth=10, time_limit=3.0):
-        self.player_color = player_color
+    def __init__(self, player, max_depth=3, time_limit=3.0):
+        self.player = player
         self.max_depth = max_depth
         self.time_limit = time_limit
-        self.transposition_table = {}
+        self.hashed_table = {}
 
     def choose_move(self, board):
         start_time = time.perf_counter()
 
-        legal_moves = board.generate_moves_for_player(self.player_color)
+        legal_moves = board.generate_moves_for_player(self.player)
         for move in legal_moves:
             board.make_move(move)
-            if board.get_winner() == self.player_color:
+            if board.get_winner() == self.player:
                 board.undo_move()
                 return move
             board.undo_move()
@@ -38,7 +38,7 @@ class AIPlayer:
     def search_best_move(self, board, depth, start_time):
         best_score = float('-inf')
         best_move = None
-        moves = board.generate_moves_for_player(self.player_color)
+        moves = board.generate_moves_for_player(self.player)
 
         if not moves:
             return None, 0
@@ -58,21 +58,27 @@ class AIPlayer:
     def minimax(self, board: Board, depth, alpha, beta, maximizing_player, start_time):
         board_key = (str(board.board), depth, maximizing_player)
 
-        if board_key in self.transposition_table:
-            saved_depth, saved_score = self.transposition_table[board_key]
+        if board_key in self.hashed_table:
+            saved_depth, saved_score = self.hashed_table[board_key]
             if saved_depth >= depth:
                 return saved_score
 
         if depth == 0 or board.get_winner() is not None:
-            score = evaluate_board(board, self.player_color)
-            self.transposition_table[board_key] = (depth, score)
+            score = evaluate_board(board, self.player)
+            self.hashed_table[board_key] = (depth, score)
             return score
         if time.perf_counter() - start_time > self.time_limit:
             raise TimeoutError()
 
-        current_player = self.player_color if maximizing_player else (constants.BLACK if self.player_color == constants.WHITE else constants.WHITE)
-        moves = board.generate_moves_for_player(current_player)
+        if maximizing_player:
+            current_player = self.player
+        else:
+            if self.player == constants.WHITE:
+                current_player = constants.BLACK
+            else:
+                current_player = constants.WHITE
 
+        moves = board.generate_moves_for_player(current_player)
         if maximizing_player:
             max_eval = float('-inf')
             for move in moves:
@@ -83,7 +89,7 @@ class AIPlayer:
                 alpha = max(alpha, eval)
                 if beta <= alpha:
                     break
-            self.transposition_table[board_key] = (depth, max_eval)
+            self.hashed_table[board_key] = (depth, max_eval)
             return max_eval
         else:
             min_eval = float('inf')
@@ -95,5 +101,5 @@ class AIPlayer:
                 beta = min(beta, eval)
                 if beta <= alpha:
                     break
-            self.transposition_table[board_key] = (depth, min_eval)
+            self.hashed_table[board_key] = (depth, min_eval)
             return min_eval
